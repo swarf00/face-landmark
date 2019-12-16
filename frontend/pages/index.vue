@@ -1,16 +1,17 @@
 <template>
   <div class="container">
-    <img v-if="landmarkImage" :src="landmarkImage" alt="landmark">
+    <img v-if="markedImage" :src="`http://localhost:8000${markedImage}`" alt="landmark">
     <p>Detect landmark of face</p>
     <el-upload
       class="upload-demo"
       ref="upload"
       name="image"
       list-type="picture"
+      :file-list="fileList"
       accept=".jpg, .jpeg, .png"
       action="http://localhost:8000/api/detect/face/landmark/"
-      on-success="onSuccess"
-      on-error="onError"
+      :on-success="onSuccess"
+      :on-error="onError"
       :auto-upload="false">
       <el-button slot="trigger" size="small" type="primary">select image file</el-button>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">upload to server</el-button>
@@ -25,8 +26,9 @@ export default {
   name: 'Index',
   data () {
     return {
-      landmarkImage: null,
+      markedImage: null,
       dialogImageUrl: '',
+      fileList: [],
       dialogVisible: false
     }
   },
@@ -35,7 +37,9 @@ export default {
       this.$refs.upload.submit()
     },
     onSuccess (data) {
-      this.$message.success(data)
+      console.log(data)
+      this.markedImage = data.img_url
+      this.fileList = []
     },
     onError (data) {
       this.$message.error(data)

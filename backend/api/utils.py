@@ -1,3 +1,5 @@
+import os
+
 import tensorflow.compat.v1 as tf
 
 
@@ -447,15 +449,18 @@ class FaceMarker:
     CURRENT_MODEL = './api/facial_models/facial_landmark_SqueezeNet.pb'
     CNN_INPUT_SIZE = 64
 
-    def __init__(self):
+    def __init__(self, base_dir='/tmp/landmark'):
         self.mark_detector = MarkDetector(self.CURRENT_MODEL, self.CNN_INPUT_SIZE)
+        self.base_dir = base_dir
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
 
     def save_temp(self, file):
         tokens = file.name.split('.')
         if len(tokens) < 2:
             return None
         ext = tokens[len(tokens) - 1]
-        filename = f'/tmp/landmark.{datetime.datetime.now().microsecond}.{ext}'
+        filename = f'{self.base_dir}/{datetime.datetime.now().microsecond}.{ext}'
         with open(filename, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
@@ -464,6 +469,10 @@ class FaceMarker:
         return None
 
     def save_image_from_cv2(self, frame, filename):
+        dir = os.path.dirname(filename)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+
         return cv2.imwrite(filename, frame)
 
     def detect_face(self, frame):
