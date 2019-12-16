@@ -33,6 +33,7 @@ $ yarn dev
 ```
 
 ## TODO
-[] Solve frontend eslint warning (element ui)
-[] Modify frontend ui
-[] Flush temp file
+
+- [ ] Solve frontend eslint warning (element ui)
+- [ ] Modify frontend ui
+- [ ] Flush temp file
