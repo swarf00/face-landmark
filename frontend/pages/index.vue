@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img v-if="markedImage" :src="`http://localhost:8000${markedImage}`" alt="landmark">
+    <img v-if="markedImage" :src="markedImageUrl" alt="landmark">
     <p>Detect landmark of face</p>
     <el-upload
       class="upload-demo"
@@ -30,6 +30,11 @@ export default {
       dialogImageUrl: '',
       fileList: [],
       dialogVisible: false
+    }
+  },
+  computed: {
+    markedImageUrl () {
+      return `http://localhost:8000${this.markedImage}`
     }
   },
   methods: {
